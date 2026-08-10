@@ -73,8 +73,11 @@ def format_price(price, currency):
 def format_message(prices):
     """Format message for display"""
     import jdatetime
+    from datetime import timezone, timedelta
     
-    now = datetime.now()
+    # Iran timezone (UTC+3:30)
+    iran_tz = timezone(timedelta(hours=3, minutes=30))
+    now = datetime.now(iran_tz)
     jalali = jdatetime.datetime.fromgregorian(datetime=now)
     
     jalali_months = [
