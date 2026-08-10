@@ -54,20 +54,20 @@ def fetch_prices():
 
 
 def format_price(price, currency):
-    """Format price with proper separators"""
+    """Format price with proper separators and decimals"""
     if currency == "USD":
-        return f"{price:,} $"
+        return f"{price:,.2f} $"
     else:
         # Convert to Toman
-        toman = price // 10
+        toman = price / 10
         if toman >= 1_000_000_000:
-            return f"{toman / 1_000_000_000:,.1f} میلیارد تومان"
+            return f"{toman / 1_000_000_000:,.2f} میلیارد تومان"
         elif toman >= 1_000_000:
-            return f"{toman / 1_000_000:,.1f} میلیون تومان"
+            return f"{toman / 1_000_000:,.2f} میلیون تومان"
         elif toman >= 1_000:
-            return f"{toman / 1_000:,.0f} هزار تومان"
+            return f"{toman:,.0f} تومان"
         else:
-            return f"{toman:,} تومان"
+            return f"{toman:,.0f} تومان"
 
 
 def format_message(prices):
