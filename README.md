@@ -1,6 +1,6 @@
 # 💰 Price Radar - رادار قیمت لحظه‌ای
 
-实时价格雷达 - 从 chandshode.com 获取黄金、硬币和货币的实时价格。
+ chandshode.com 
 
 ## 🚀 Features
 
