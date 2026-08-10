@@ -21,7 +21,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests jdatetime
       
-      - name: Fetch prices
+      - name: Fetch prices and send to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python main.py
       
       - name: Upload prices
@@ -30,3 +33,4 @@ jobs:
           name: prices
           path: output/
           retention-days: 7
+          if-no-files-found: warn
