@@ -1,8 +1,8 @@
 name: Price Radar Update
 
-on:
-  schedule:
-    - cron: '0 * * * *'  # Every 30 minutes
+  # schedule:
+  #   - cron: '0 * * * *'
+  # Every 30 minutes
   workflow_dispatch:
 
 jobs:
