@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Real-time Price Radar Bot
-Fetches live prices from chandshode.com and generates a formatted report.
+Fetches live prices from chandshode.com and sends to Telegram.
 """
 
 import requests
@@ -119,6 +119,42 @@ def format_message(prices):
     return msg
 
 
+def send_to_telegram(message):
+    """Send message to Telegram"""
+    bot_token = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+    chat_id = os.environ.get("TELEGRAM_CHAT_ID", "")
+    
+    if not bot_token or not chat_id:
+        print("Telegram credentials not set")
+        print("Message:")
+        print(message)
+        return False
+    
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    
+    data = {
+        "chat_id": chat_id,
+        "text": message,
+        "parse_mode": None  # Plain text, no markdown
+    }
+    
+    try:
+        resp = requests.post(url, json=data, timeout=10)
+        resp.raise_for_status()
+        
+        result = resp.json()
+        if result.get("ok"):
+            print("Message sent to Telegram successfully")
+            return True
+        else:
+            print(f"Telegram error: {result}")
+            return False
+            
+    except Exception as e:
+        print(f"Error sending to Telegram: {e}")
+        return False
+
+
 def main():
     print("Fetching prices from chandshode.com...")
     prices = fetch_prices()
@@ -132,12 +168,17 @@ def main():
     message = format_message(prices)
     print("\n" + message)
     
+    # Send to Telegram
+    print("\nSending to Telegram...")
+    send_to_telegram(message)
+    
     # Save to file
     os.makedirs("output", exist_ok=True)
     with open("output/latest_prices.txt", "w", encoding="utf-8") as f:
         f.write(message)
     
     print("\nSaved to output/latest_prices.txt")
+    print("\nDone!")
 
 
 if __name__ == "__main__":
